@@ -14,7 +14,7 @@ def normalize_word(w):
 
 
 def get_tokenized_lemmas(s):
-    return [normalize_word(t) for t in nltk.word_tokenize(s)]
+    return " ".join([normalize_word(t) for t in nltk.word_tokenize(s)])
 
 
 def clean(s):
@@ -180,6 +180,7 @@ def hand_features(headlines, bodies):
                 bin_count += 1
                 bin_count_early += 1
         return [bin_count, bin_count_early]
+
 
     def count_grams(headline, body):
         # Count how many times an n-gram of the title

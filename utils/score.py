@@ -1,5 +1,6 @@
 #Adapted from https://github.com/FakeNewsChallenge/fnc-1/blob/master/scorer.py
 #Original credit - @bgalbraith
+import csv
 
 LABELS = ['agree', 'disagree', 'discuss', 'unrelated']
 LABELS_RELATED = ['unrelated','related']
@@ -52,6 +53,21 @@ def report_score(actual,predicted):
     print_confusion_matrix(cm)
     print("Score: " +str(score) + " out of " + str(best_score) + "\t("+str(score*100/best_score) + "%)")
     return score*100/best_score
+
+
+def generate_answer_csv(stances, predicted):
+    with open('answer.csv', 'w', encoding='UTF8') as f:
+        writer = csv.writer(f)
+        # write the header
+        header = ['Headline', 'Body ID', 'Stance']
+        writer.writerow(header)
+
+        for index, stance in enumerate(stances):
+            headline = stance['Headline']
+            body_id = stance['Body ID']
+            stance = predicted[index]
+            writer.writerow([headline, body_id, stance])
+
 
 
 if __name__ == "__main__":

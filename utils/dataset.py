@@ -1,5 +1,10 @@
 from csv import DictReader
+import numpy as np
+import pandas as pd
+from feature_engineering import clean
 
+LABELS = ['agree', 'disagree', 'discuss', 'unrelated']
+LABELS_RELATED = ['unrelated','related']
 
 class DataSet():
     def __init__(self, name="train", path="fnc-1"):
@@ -24,6 +29,20 @@ class DataSet():
         print("Total stances: " + str(len(self.stances)))
         print("Total bodies: " + str(len(self.articles)))
 
+    def to_dataframe(self):
+        stances = []
+        headlines = []
+        bodies = []
+
+        for stance in self.stances:
+            stances.append(LABELS.index(stance['Stance']))
+            headlines.append(clean(stance['Headline']))
+            bodies.append(clean(self.articles[stance['Body ID']]))
+        # dictionary of lists
+        dict = {'Stances': stances, 'Headlines': headlines, 'Bodies': bodies}
+
+
+        return  pd.DataFrame(dict)
 
 
     def read(self,filename):
